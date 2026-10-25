@@ -1,0 +1,348 @@
+
+Диагностика сервера каталогов
+
+Выполнение начальной настройки:
+   Выполняется попытка поиска основного сервера...
+   * Проверка, является ли локальный компьютер hw сервером каталогов. 
+   Основной сервер = hw
+   * Подключение к службе каталога на сервере hw.
+   * Определен лес AD. 
+   Collecting AD specific global data 
+   * Сбор сведений о сайте.
+   Calling ldap_search_init_page(hld,CN=Sites,CN=Configuration,DC=hw,DC=local,LDAP_SCOPE_SUBTREE,(objectCategory=ntDSSiteSettings),.......
+   The previous call succeeded 
+   Iterating through the sites 
+   Looking at base site object: CN=NTDS Site Settings,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+   Getting ISTG and options for the site
+   * Выполнение идентификации всех серверов.
+   Calling ldap_search_init_page(hld,CN=Sites,CN=Configuration,DC=hw,DC=local,LDAP_SCOPE_SUBTREE,(objectClass=ntDSDsa),.......
+   The previous call succeeded....
+   The previous call succeeded
+   Iterating through the list of servers 
+   Getting information for the server CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local 
+   objectGuid obtained
+   InvocationID obtained
+   dnsHostname obtained
+   site info obtained
+   All the info for the server collected
+   * Идентификация всех перекрестных ссылок NC.
+   * Найдено 1 DC (контроллеров домена). Проверка 1 из них.
+   Сбор начальных данных завершен.
+
+Выполнение обязательных начальных проверок
+   
+   Сервер проверки: Default-First-Site-Name\HW
+      Запуск проверки: Connectivity
+         * Active Directory LDAP Services Check
+         Determining IP4 connectivity 
+         * Active Directory RPC Services Check
+         ......................... HW - пройдена проверка Connectivity
+
+Выполнение основных проверок
+   
+   Сервер проверки: Default-First-Site-Name\HW
+      Запуск проверки: Advertising
+         The DC HW is advertising itself as a DC and having a DS.
+         The DC HW is advertising as an LDAP server
+         The DC HW is advertising as having a writeable directory
+         The DC HW is advertising as a Key Distribution Center
+         The DC HW is advertising as a time server
+         The DS HW is advertising as a GC.
+         ......................... HW - пройдена проверка Advertising
+      Проверка пропущена по запросу пользователя: CheckSecurityError
+      Проверка пропущена по запросу пользователя: CutoffServers
+      Запуск проверки: FrsEvent
+         * Проверка журнала событий службы репликации файлов 
+         Пропустить тест, так как на сервере выполняется репликация DFSR.
+         ......................... HW - пройдена проверка FrsEvent
+      Запуск проверки: DFSREvent
+         The DFS Replication Event Log. 
+         За последние 24 часа после предоставления SYSVOL в общий доступ
+         зафиксированы предупреждения или сообщения  об ошибках.  Сбои при
+         репликации SYSVOL могут стать причиной проблем групповой политики. 
+         Возникла ошибка. Код события (EventID): 0xC00004B2
+            Время создания: 10/25/2026   13:43:22
+            Строка события:
+            Службе репликации DFS не удалось связаться с контроллером домена , чтобы получить сведения о конфигурации. Репликация остановлена. Служба вновь попытается это сделать во время следующего цикла опроса, который произойдет через 60 мин. Это событие может быть вызвано проблемами с подключением TCP/IP, брандмауэром, доменными службами Active Directory или DNS. 
+             
+            Дополнительные сведения:  
+            Ошибка: 160 (Неверны один или несколько аргументов.)
+         Возникло предупреждение. Код события (EventID): 0x800008A4
+            Время создания: 10/25/2026   13:48:23
+            Строка события:
+            Служба репликации DFS обнаружила неожиданное завершение работы на томе C:. Это могло произойти из-за некорректного завершения работы службы (например, из-за отключения электропитания) или в результате ошибки на томе.  Служба автоматически запустила процесс восстановления. Эта служба построит базу данных заново, если обнаружит, что надежное восстановление выполнить невозможно. Действий пользователя не требуется. 
+             
+            Дополнительные сведения: 
+            Том: C: 
+            GUID: EC66230C-0114-4CC3-B725-9C50DCA59B5F
+         ......................... HW - не пройдена проверка DFSREvent
+      Запуск проверки: SysVolCheck
+         * Проверка готовности SYSVOL службы репликации файлов 
+         SYSVOL службы репликации файлов готов 
+         ......................... HW - пройдена проверка SysVolCheck
+      Запуск проверки: KccEvent
+         * The KCC Event log test
+         Возникло предупреждение. Код события (EventID): 0x80000BEB
+            Время создания: 10/25/2026   13:42:50
+            Строка события:
+            В каталоге настроено неприменение авторизации по атрибутам во время операций добавления LDAP. В журнале регистрируются события предупреждений, но никакие запросы не блокируются. 
+             
+            Этот параметр не является безопасным и должен использоваться только как временное действие по устранению неполадок. Ознакомьтесь с предложенными мерами по устранению рисков по ссылке ниже. 
+             
+            Дополнительные сведения: https://go.microsoft.com/fwlink/?linkid=2174032.
+         Возникло предупреждение. Код события (EventID): 0x80000BEE
+            Время создания: 10/25/2026   13:42:50
+            Строка события:
+            В каталоге разрешены неявные привилегии владельца при первоначальном настройке или изменении nTSecurityDescriptor атрибута во время операций добавления и изменения LDAP. События предупреждения будут регистрироваться, но запросы не блокируются.  
+             
+            Этот параметр не является безопасным и должен использоваться только как временный шаг устранения неполадок. Ознакомьтесь с предложенными устранениями рисков по ссылке ниже.  
+             
+            Дополнительные сведения см. в https://go.microsoft.com/fwlink/?linkid=2174032.
+         Возникло предупреждение. Код события (EventID): 0x80000B46
+            Время создания: 10/25/2026   13:43:01
+            Строка события:
+            Безопасность данного сервера каталогов можно существенно повысить, если настроить его на отклонение привязок LDAP SASL (согласование, Kerberos, NTLM или дайджест), не требующих подписи (проверки целостности), и простых привязок LDAP, которые  выполняются через открытое (не зашифрованное с помощью SSL/TLS) подключение. Даже если клиенты не используют такие привязки, настройка сервера на их отклонение улучшит его безопасность. 
+             
+            Если некоторые клиенты сейчас используют неподписанные привязки SASL или простые привязки LDAP для подключения без SSL/TLS, после такого изменения конфигурации они могут перестать работать. Чтобы помочь выявить такие клиенты, сервер каталогов будет каждые 24 часа регистрировать итоговое событие, указывающее, сколько таких привязок произошло. Рекомендуется настроить клиенты так, чтобы они не использовали их. Как только соответствующие события перестанут регистрироваться в течение достаточно долгого периода, советуем настроить сервер на отклонение таких привязок. 
+             
+            Дополнительные сведения о том, как изменить конфигурацию сервера, см. в статье http://go.microsoft.com/fwlink/?LinkID=87923. 
+             
+            Вы можете включить расширенное ведение журнала, чтобы регистрировать событие при каждой привязке клиента, включая сведения о том,  на каком клиенте она сделана. Для этого следует поднять значение для категории ведения журнала событий "События интерфейса LDAP" до уровня 2 или выше.
+         Возникло предупреждение. Код события (EventID): 0x80000BE1
+            Время создания: 10/25/2026   13:43:01
+            Строка события:
+            Безопасность сервера каталогов можно существенно повысить, настроив на нем принудительную проверку токенов привязки канала,  получаемых в запросах LDAP-привязок через LDAPS-соединения. Даже если  никакие клиенты не отправляют запросы LDAP-привязок через LDAPS-соединение,  безопасность сервера улучшится после настройки такой проверки. 
+             
+            Более подробную информацию о том, как внести это изменение в конфигурацию сервера, см. здесь: https://go.microsoft.com/fwlink/?linkid=2102405.
+         Found no KCC errors in "Directory Service" Event log in the last 15 minutes.
+         ......................... HW - пройдена проверка KccEvent
+      Запуск проверки: KnowsOfRoleHolders
+         Role Schema Owner = CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+         Role Domain Owner = CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+         Role PDC Owner = CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+         Role Rid Owner = CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+         Role Infrastructure Update Owner = CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+         ......................... HW - пройдена проверка KnowsOfRoleHolders
+      Запуск проверки: MachineAccount
+         Checking machine account for DC HW on DC HW.
+         * SPN found :LDAP/hw.hw.local/hw.local
+         * SPN found :LDAP/hw.hw.local
+         * SPN found :LDAP/HW
+         * SPN found :LDAP/hw.hw.local/HW0
+         * SPN found :LDAP/71cf8af7-9dc2-41cc-8d33-e989ee57e9c7._msdcs.hw.local
+         * SPN found :E3514235-4B06-11D1-AB04-00C04FC2DCD2/71cf8af7-9dc2-41cc-8d33-e989ee57e9c7/hw.local
+         * SPN found :HOST/hw.hw.local/hw.local
+         * SPN found :HOST/hw.hw.local
+         * SPN found :HOST/HW
+         * SPN found :HOST/hw.hw.local/HW0
+         * SPN found :GC/hw.hw.local/hw.local
+         ......................... HW - пройдена проверка MachineAccount
+      Запуск проверки: NCSecDesc
+         * Security Permissions check for all NC's on DC HW.
+         * Проверка разрешений безопасности для
+           DC=ForestDnsZones,DC=hw,DC=local
+            (NDNC,Version 3)
+         * Проверка разрешений безопасности для
+           DC=DomainDnsZones,DC=hw,DC=local
+            (NDNC,Version 3)
+         * Проверка разрешений безопасности для
+           CN=Schema,CN=Configuration,DC=hw,DC=local
+            (Schema,Version 3)
+         * Проверка разрешений безопасности для
+           CN=Configuration,DC=hw,DC=local
+            (Configuration,Version 3)
+         * Проверка разрешений безопасности для
+           DC=hw,DC=local
+            (Domain,Version 3)
+         ......................... HW - пройдена проверка NCSecDesc
+      Запуск проверки: NetLogons
+         * Network Logons Privileges Check
+         Verified share \\HW\netlogon
+         Verified share \\HW\sysvol
+         ......................... HW - пройдена проверка NetLogons
+      Запуск проверки: ObjectsReplicated
+         HW is in domain DC=hw,DC=local
+         Checking for CN=HW,OU=Domain Controllers,DC=hw,DC=local in domain DC=hw,DC=local on 1 servers
+            Object is up-to-date on all servers.
+         Checking for CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local in domain CN=Configuration,DC=hw,DC=local on 1 servers
+            Object is up-to-date on all servers.
+         ......................... HW - пройдена проверка ObjectsReplicated
+      Проверка пропущена по запросу пользователя: OutboundSecureChannels
+      Запуск проверки: Replications
+         * Replications Check
+         * Replication Latency Check
+         ......................... HW - пройдена проверка Replications
+      Запуск проверки: RidManager
+         * Available RID Pool for the Domain is 1601 to 1073741823
+         * hw.hw.local is the RID Master
+         * DsBind with RID Master was successful
+         * rIDAllocationPool is 1101 to 1600
+         * rIDPreviousAllocationPool is 1101 to 1600
+         * rIDNextRID: 1108
+         ......................... HW - пройдена проверка RidManager
+      Запуск проверки: Services
+         * Checking Service: EventSystem
+         * Checking Service: RpcSs
+         * Checking Service: NTDS
+         * Checking Service: DnsCache
+         * Checking Service: DFSR
+         * Checking Service: IsmServ
+         * Checking Service: kdc
+         * Checking Service: SamSs
+         * Checking Service: LanmanServer
+         * Checking Service: LanmanWorkstation
+         * Checking Service: w32time
+         * Checking Service: NETLOGON
+         ......................... HW - пройдена проверка Services
+      Запуск проверки: SystemLog
+         * The System Event log test
+         Возникла ошибка. Код события (EventID): 0x80001778
+            Время создания: 10/25/2026   13:42:53
+            Строка события:
+            Предыдущее завершение работы системы в 14:22:14 на 22.10.2026 было неожиданным.
+         Возникла ошибка. Код события (EventID): 0x00000029
+            Время создания: 10/25/2026   13:42:42
+            Строка события:
+            Система перезагрузилась, завершив работу с ошибками. Возможные причины ошибки: система перестала отвечать на запросы, произошел критический сбой или неожиданно отключилось питание.
+         Возникло предупреждение. Код события (EventID): 0x000003F6
+            Время создания: 10/25/2026   13:42:53
+            Строка события:
+            Разрешение имен для имени _ldap._tcp.dc._msdcs.hw.local. истекло после отсутствия ответа от настроенных серверов DNS.
+         Возникло предупреждение. Код события (EventID): 0x000003F6
+            Время создания: 10/25/2026   13:42:55
+            Строка события:
+            Разрешение имен для имени _ldap._tcp.dc._msdcs.hw.local. истекло после отсутствия ответа от настроенных серверов DNS.
+         Возникло предупреждение. Код события (EventID): 0x000727AA
+            Время создания: 10/25/2026   13:43:20
+            Строка события:
+            Службе WinRM не удалось создать следующие имена участников-служб: WSMAN/hw.hw.local, WSMAN/hw. 
+            
+             Дополнительные данные 
+             Была получена ошибка "1355": %%1355.
+            
+             Действия пользователя 
+             Имена участников-служб можно создать под учетной записью администратора с помощью служебной программы setspn.exe.
+         Возникло предупреждение. Код события (EventID): 0x0000000C
+            Время создания: 10/25/2026   13:43:23
+            Строка события:
+            NTP-клиент поставщика времени: этот компьютер настроен на использование доменной иерархии для определения своего источника времени, но при этом он является эмулятором основного контроллера домена Active Directory для домена в корне леса, поэтому в доменной иерархии не существует компьютера, расположенного выше, который можно использовать как источник времени. Рекомендуется настроить надежную службу времени в корневом домене или вручную настроить основной контроллер домена Active Directory для синхронизации с внешним источником времени. В противном случае этот компьютер будет выступать в роли заслуживающего доверия источника времени в доменной иерархии. Если внешний источник времени не настроен или не используется для этого компьютера, можно отключить NTP-клиент.
+         Возникла ошибка. Код события (EventID): 0x00000704
+            Время создания: 10/25/2026   13:44:56
+            Строка события:
+            При обновлении безопасной загрузки не удалось обновить переменную безопасной загрузки с ошибкой Безопасная загрузка не включена на этом компьютере.. Дополнительные сведения см. на странице https://go.microsoft.com/fwlink/?linkid=2169931
+         Возникла ошибка. Код события (EventID): 0x00002720
+            Время создания: 10/25/2026   13:47:23
+            Строка события:
+            Параметры разрешений по умолчанию для компьютера не дают разрешения Локально Активация для приложения COM-сервера с CLSID 
+            {F87B28F1-DA9A-4F35-8EC0-800EFCF26B83}
+             и APPID 
+            {0868DC9B-D9A2-4F64-9362-133CEA201299}
+             пользователю NT AUTHORITY\NETWORK SERVICE с ИД безопасности (S-1-5-20) и адресом LocalHost (с использованием LRPC), выполняемого в контейнере приложения Недоступно с ИД безопасности (Недоступно). Это разрешение безопасности можно изменить с помощью средства администрирования служб компонентов.
+         Возникло предупреждение. Код события (EventID): 0x80000434
+            Время создания: 10/25/2026   13:47:32
+            Строка события:
+            Причина непредвиденного завершения работы данного компьютера, указанная пользователем HW0\fedor: Другое (Незапланированное)
+             Код причины: 0xa000000
+             ИД проблемы: 
+             Строка проверки: 
+             Комментарий: 
+            
+         Возникла ошибка. Код события (EventID): 0x00002720
+            Время создания: 10/25/2026   13:48:10
+            Строка события:
+            Параметры разрешений по умолчанию для компьютера не дают разрешения Локально Активация для приложения COM-сервера с CLSID 
+            {F87B28F1-DA9A-4F35-8EC0-800EFCF26B83}
+             и APPID 
+            {0868DC9B-D9A2-4F64-9362-133CEA201299}
+             пользователю NT AUTHORITY\NETWORK SERVICE с ИД безопасности (S-1-5-20) и адресом LocalHost (с использованием LRPC), выполняемого в контейнере приложения Недоступно с ИД безопасности (Недоступно). Это разрешение безопасности можно изменить с помощью средства администрирования служб компонентов.
+         Возникло предупреждение. Код события (EventID): 0x00001796
+            Время создания: 10/25/2026   13:49:12
+            Строка события:
+            Microsoft Windows Server обнаружено, что в настоящее время между клиентами и этим сервером используется проверка подлинности NTLM. Это событие возникает один раз при каждой загрузке, когда клиент первый раз использует NTLM с этим сервером.
+             
+            NTLM представляет собой менее надежный механизм проверки подлинности. Проверьте следующее:
+             
+                  Какие приложения используют проверку подлинности NTLM?
+                  Имеются ли какие-либо проблемы с конфигурацией, препятствующие использованию более строгой проверки подлинности, такой как Kerberos?
+                  Если необходима поддержка NTLM, настроена ли усиленная защита?
+             
+            Сведения о том, как выполнить эти проверки, см. по адресу http://go.microsoft.com/fwlink/?LinkId=225699.
+         ......................... HW - не пройдена проверка SystemLog
+      Проверка пропущена по запросу пользователя: Topology
+      Проверка пропущена по запросу пользователя: VerifyEnterpriseReferences
+      Запуск проверки: VerifyReferences
+         Ссылка на системный объект (serverReference)
+         CN=HW,OU=Domain Controllers,DC=hw,DC=local и обратная ссылка на
+         CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+         правильны. 
+         Ссылка на системный объект (serverReferenceBL)
+         CN=HW,CN=Topology,CN=Domain System Volume,CN=DFSR-GlobalSettings,CN=System,DC=hw,DC=local
+         и обратная ссылка на
+         CN=NTDS Settings,CN=HW,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=hw,DC=local
+         правильны. 
+         Ссылка на системный объект (msDFSR-ComputerReferenceBL)
+         CN=HW,CN=Topology,CN=Domain System Volume,CN=DFSR-GlobalSettings,CN=System,DC=hw,DC=local
+         и обратная ссылка на CN=HW,OU=Domain Controllers,DC=hw,DC=local
+         правильны. 
+         ......................... HW - пройдена проверка VerifyReferences
+      Проверка пропущена по запросу пользователя: VerifyReplicas
+   
+      Проверка пропущена по запросу пользователя: DNS
+      Проверка пропущена по запросу пользователя: DNS
+   
+   Выполнение проверок разделов на: ForestDnsZones
+      Запуск проверки: CheckSDRefDom
+         ......................... ForestDnsZones - пройдена проверка
+         CheckSDRefDom
+      Запуск проверки: CrossRefValidation
+         ......................... ForestDnsZones - пройдена проверка
+         CrossRefValidation
+   
+   Выполнение проверок разделов на: DomainDnsZones
+      Запуск проверки: CheckSDRefDom
+         ......................... DomainDnsZones - пройдена проверка
+         CheckSDRefDom
+      Запуск проверки: CrossRefValidation
+         ......................... DomainDnsZones - пройдена проверка
+         CrossRefValidation
+   
+   Выполнение проверок разделов на: Schema
+      Запуск проверки: CheckSDRefDom
+         ......................... Schema - пройдена проверка CheckSDRefDom
+      Запуск проверки: CrossRefValidation
+         ......................... Schema - пройдена проверка
+         CrossRefValidation
+   
+   Выполнение проверок разделов на: Configuration
+      Запуск проверки: CheckSDRefDom
+         ......................... Configuration - пройдена проверка
+         CheckSDRefDom
+      Запуск проверки: CrossRefValidation
+         ......................... Configuration - пройдена проверка
+         CrossRefValidation
+   
+   Выполнение проверок разделов на: hw
+      Запуск проверки: CheckSDRefDom
+         ......................... hw - пройдена проверка CheckSDRefDom
+      Запуск проверки: CrossRefValidation
+         ......................... hw - пройдена проверка CrossRefValidation
+   
+   Выполнение проверок предприятия на: hw.local
+      Проверка пропущена по запросу пользователя: DNS
+      Проверка пропущена по запросу пользователя: DNS
+      Запуск проверки: LocatorCheck
+         Имя GC: \\hw.hw.local
+         Locator Flags: 0xe003f3fd
+         PDC Name: \\hw.hw.local
+         Locator Flags: 0xe003f3fd
+         Time Server Name: \\hw.hw.local
+         Locator Flags: 0xe003f3fd
+         Preferred Time Server Name: \\hw.hw.local
+         Locator Flags: 0xe003f3fd
+         KDC Name: \\hw.hw.local
+         Locator Flags: 0xe003f3fd
+         ......................... hw.local - пройдена проверка LocatorCheck
+      Запуск проверки: Intersite
+         Сайт Default-First-Site-Name пропущен, он находится вне диапазона,
+         определенного аргументами командной строки. 
+         ......................... hw.local - пройдена проверка Intersite
